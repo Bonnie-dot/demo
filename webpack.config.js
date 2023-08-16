@@ -1,5 +1,6 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const CopyWebpackPlugin = require("copy-webpack-plugin");
 
 module.exports = {
     entry: './src/index.tsx',
@@ -7,15 +8,24 @@ module.exports = {
     module: {
         rules: [
             {
+                // it handled ts and jsx
                 test: /\.tsx?$/,
                 use: 'ts-loader',
                 exclude: /node_modules/,
+            },
+            {
+                test: /\.css$/i,
+                use: ['style-loader', 'css-loader','sass-loader'],
+            },
+            {
+                test: /\.(png|svg|jpg|jpeg|gif)$/i,
+                type: 'asset',
             },
         ],
     },
     devServer: {
         static: './dist',
-        port:3000
+        port: 3000
     },
     devtool: 'inline-source-map',
     resolve: {
@@ -24,11 +34,17 @@ module.exports = {
     output: {
         filename: 'bundle.js',
         path: path.resolve(__dirname, 'dist'),
-        clean: true
+        clean: true,
     },
     plugins: [
         new HtmlWebpackPlugin({
-            title: 'Work Shop',
+            title: 'WorkShop',
+            template: "./public/template.html",
+        }),
+        new CopyWebpackPlugin({
+            patterns: [
+                { from: './public/favicon.ico', to: 'favicon.ico' }
+            ],
         }),
     ],
 };
