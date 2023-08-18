@@ -1,5 +1,7 @@
 const path = require("path");
 const HtmlWebpackPlugin = require("html-webpack-plugin");
+const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
+
 module.exports = {
     entry: './src/Index.tsx',
     module: {
@@ -36,5 +38,6 @@ module.exports = {
             favicon: './public/favicon.ico',
             hash: true
         }),
+        new ForkTsCheckerWebpackPlugin()
     ],
 }

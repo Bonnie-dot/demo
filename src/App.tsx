@@ -2,18 +2,29 @@ import React from 'react'
 import {Box, List, ListItem, ListItemButton} from "@mui/material";
 import {NavLink} from "react-router-dom";
 
+const links: Array<{ name: string; url: string }> = [
+    {
+        name: 'Demo',
+        url: '/demo'
+    }, {
+        name: 'Download File',
+        url: '/download-file'
+    },
+]
+
 const App = () => {
-    return <Box sx={{ width: '100%'}}>
+    return <Box sx={{width: '100%'}}>
         <nav aria-label="secondary mailbox folders">
             <List>
-                <ListItem disablePadding>
-                    <ListItemButton>
-                        <NavLink to='/demo'>Your Name</NavLink>
-                    </ListItemButton>
-                </ListItem>
-                <ListItem disablePadding>
-                    <NavLink to='/download-file'>Your Name</NavLink>
-                </ListItem>
+                {
+                    links.map(({name, url}) =>
+                        <ListItem>
+                            <ListItemButton>
+                                <NavLink to={url}>{name}</NavLink>
+                            </ListItemButton>
+                        </ListItem>
+                    )
+                }
             </List>
         </nav>
     </Box>

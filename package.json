@@ -1,11 +1,12 @@
 {
   "name": "workshop",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "Index.jsx",
   "license": "MIT",
   "scripts": {
     "start": "node server.js --config webpack.dev.js",
-    "build": "tsc && webpack --config webpack.prod.js"
+    "build": "tsc && webpack --config webpack.prod.js",
+    "lint": "yarn eslint ."
   },
   "devDependencies": {
     "@babel/cli": "^7.22.10",
@@ -16,6 +17,7 @@
     "@types/react-dom": "^18.2.7",
     "copy-webpack-plugin": "^11.0.0",
     "css-loader": "^6.8.1",
+    "fork-ts-checker-webpack-plugin": "^8.0.0",
     "html-webpack-plugin": "^5.5.3",
     "sass": "^1.65.1",
     "sass-loader": "^13.3.2",
