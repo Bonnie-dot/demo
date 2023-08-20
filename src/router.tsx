@@ -3,7 +3,7 @@ import {
     createBrowserRouter,
 } from "react-router-dom";
 import App from './App';
-const DownloadFile = lazy(()=>import("./page/DownloadFile/DownloadFile"));
+const DownloadFile = lazy(()=>import("./page/OperateFile/OperateFile"));
 const Demo = lazy(()=>import("./page/Demo/Demo"));
 
 const router = createBrowserRouter([{
