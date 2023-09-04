@@ -20,7 +20,7 @@ module.exports = merge(common, {
                     test: /node_modules/,
                     chunks: 'initial',
                     minSize: 100,
-                    minChunks: 1 //重复引入了几次
+                    minChunks: 3 //重复引入了几次
                 },
             }
         },
