@@ -16,13 +16,14 @@ module.exports = {
                 use: [{
                     loader: 'ts-loader',
                     options: {
-                        transpileOnly: true, // This speeds up TypeScript type checking and ESLint linting by moving each to a separate process.
+                        // This speeds up TypeScript type checking and ESLint linting by moving each to a separate process.
+                        transpileOnly: true,
                     },
                 }],
                 exclude: /node_modules/,
             },
             {
-                test: /\.css$/i,
+                test: /\.s[ac]ss$/i,
                 use: ['style-loader', 'css-loader', 'sass-loader'],
             },
             {
