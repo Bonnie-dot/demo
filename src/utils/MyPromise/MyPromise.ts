@@ -20,6 +20,10 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = "FULFILLED";
             this._value = value;
+            let callback;
+            while (callback = this._onResolveCallbacks.shift()){
+                callback(value);
+            }
         })
     }
 
@@ -28,6 +32,10 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = "REJECTED";
             this._reason = value;
+            let callback;
+            while (callback = this._onRejectCallbacks.shift()){
+                callback(value);
+            }
         })
     }
 
@@ -83,8 +91,9 @@ class MyPromise<T> {
         })
 
     }
-
-
+    catch(onRejected?: (value: T) => unknown): MyPromise<T> {
+        return this.then(undefined,onRejected);
+    }
 
 }
 

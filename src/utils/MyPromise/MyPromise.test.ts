@@ -17,4 +17,14 @@ describe("MyPromise", () => {
             expect(value).toEqual(2);
         })
     });
+
+    it('should return value when call catch method given reject', () => {
+        new MyPromise((resolve, reject) => {
+            reject(4);
+        }).catch((value) => {
+            expect(value).toEqual(4);
+        })
+    });
+
+
 })
