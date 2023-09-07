@@ -2,6 +2,16 @@ type State = 'PENDING' | 'FULFILLED' | 'REJECTED'
 type Handler = (resolve: (value: unknown) => void, reject: (value: unknown) => void) => void;
 const isFunction = (fn: unknown): fn is (arg?: unknown) => unknown => typeof fn === "function";
 
+interface PromiseFulfilledResult<T> {
+    status: "fulfilled";
+    value: T;
+}
+
+interface PromiseRejectedResult {
+    status: "rejected";
+    reason: any;
+}
+
 class MyPromise<T> {
     _state: State;
     _value: T;
@@ -138,6 +148,27 @@ class MyPromise<T> {
             }
         })
     }
+    /*
+    * Waits for all the input promises to settle (either resolve or reject), and it doesn't fail the entire operation if some promises reject
+    * Run multiple asynchronous tasks in parallel, and you're interested in knowing the outcome of each task
+    * */
+    static allSettled(values: unknown[]) {
+        return new MyPromise((resolve, reject) => {
+            const results: unknown[] = [];
+            const onFinalCallback = (value: MyPromise<unknown>,state:State,fn: Function) => {
+                results.push({status: state, value: value});
+                if (results.length === values.length) {
+                    fn(results);
+                }
+            }
+            for (let i = 0; i < values.length; i++) {
+                MyPromise.resolve(values[i])
+                    .then((value) => {
+                        onFinalCallback(value, "FULFILLED", resolve)}, (value) => onFinalCallback(value,"REJECTED", reject));
+            }
+        })
+    }
+
 }
 
 export default MyPromise

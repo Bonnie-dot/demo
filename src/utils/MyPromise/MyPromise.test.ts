@@ -57,10 +57,17 @@ describe("MyPromise", () => {
             })
     });
 
-    it('should return value when call static all method given a reject value', () => {
+    it('should return value when call static all method given different state promises', () => {
         MyPromise.all([MyPromise.resolve(1), MyPromise.reject(5), MyPromise.resolve(1)])
             .then(undefined,(value)=>{
                 expect(value).toEqual(5)
+            })
+    });
+
+    it('should return value when call static allSettled method given different state promises', () => {
+        MyPromise.allSettled([MyPromise.resolve(1), MyPromise.reject(5), MyPromise.resolve(1)])
+            .then((value)=>{
+                expect(value).toEqual([{"status": "FULFILLED", "value": 1}, {"status": "REJECTED", "value": 5}, {"status": "FULFILLED", "value": 1}])
             })
     });
 })
