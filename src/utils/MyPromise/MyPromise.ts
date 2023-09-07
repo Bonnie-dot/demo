@@ -6,12 +6,14 @@ class MyPromise<T> {
     _state: State;
     _value: T;
     _reason: unknown;
-    _onResolveCallbacks: Function[] = [];
-    _onRejectCallbacks: Function[] = [];
+    _onResolveCallbacks: Function[];
+    _onRejectCallbacks: Function[];
 
     constructor(handler: Handler) {
         this._state = "PENDING";
         this._value = undefined;
+        this._onRejectCallbacks = [];
+        this._onResolveCallbacks = [];
         handler(this._resolve.bind(this), this._reject.bind(this));
     }
 
@@ -114,6 +116,27 @@ class MyPromise<T> {
         } else {
             return new MyPromise((undefined, reject) => reject(value));
         }
+    }
+
+    /*
+    *  If even a single promise in the input array rejects, the entire Promise.all operation will fail, and you won't get any of the resolved values.
+    *  This behavior is suitable when you want all promises to succeed, and if any of them fail, you want to handle the error immediately.
+    * */
+    static all(values: unknown[]) {
+        return new MyPromise((resolve, reject) => {
+            let results: unknown[] = [];
+            for (let i = 0; i < values.length; i++) {
+                MyPromise.resolve(values[i])
+                    .then((value) => {
+                        results.push(value)
+                        if (results.length === values.length) {
+                            resolve(results)
+                        }
+                    }, (value) => {
+                        reject(value);
+                    });
+            }
+        })
     }
 }
 
