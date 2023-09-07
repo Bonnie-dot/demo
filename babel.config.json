@@ -3,9 +3,10 @@
     [
       "@babel/preset-env",
       {
-        "targets": ["defaults and supports es6-module"],
+        "targets": ["defaults and supports es6-module"]
       }
-    ]
+    ],
+    "@babel/preset-typescript"
   ],
   "plugins": []
 }

@@ -1,11 +1,13 @@
-const path = require("path");
-const HtmlWebpackPlugin = require("html-webpack-plugin");
-const ForkTsCheckerWebpackPlugin = require("fork-ts-checker-webpack-plugin");
-const {CleanWebpackPlugin} = require('clean-webpack-plugin');
-const AddAssetHtmlPlugin = require('add-asset-html-webpack-plugin');
-const webpack = require("webpack");
+import path from 'path';
+import ForkTsCheckerWebpackPlugin from "fork-ts-checker-webpack-plugin";
+import HtmlWebpackPlugin from "html-webpack-plugin";
+import {CleanWebpackPlugin} from "clean-webpack-plugin";
+import Webpack from "webpack";
+import { fileURLToPath } from 'url';
 
-module.exports = {
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+const config = {
     entry: './src/Index.tsx',
     cache: true,
     module: {
@@ -53,8 +55,9 @@ module.exports = {
         new CleanWebpackPlugin({
             cleanOnceBeforeBuildPatterns: ['**/*', '!dll', '!dll/**'] //不删除dll目录
         }),
-        new webpack.DllReferencePlugin({
+        new Webpack.DllReferencePlugin({
             manifest: path.resolve(__dirname, 'dist', 'dll', 'manifest.json')
         }),
     ],
 }
+export default config;

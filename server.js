@@ -1,7 +1,6 @@
-const Webpack = require('webpack');
-const WebpackDevServer = require('webpack-dev-server');
-const webpackConfig = require('./ webpack.dev');
-
+import Webpack from 'webpack';
+import WebpackDevServer from 'webpack-dev-server'
+import webpackConfig from './ webpack.dev.js'
 const compiler = Webpack(webpackConfig);
 const devServerOptions = { ...webpackConfig.devServer, open: true };
 const server = new WebpackDevServer(devServerOptions, compiler);

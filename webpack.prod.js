@@ -1,9 +1,9 @@
-const { merge } = require('webpack-merge');
-const common = require('./webpack.common.js');
-const TerserPlugin = require("terser-webpack-plugin");
-// const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
+import {merge} from "webpack-merge";
+import common from './webpack.common.js';
+import TerserPlugin from "terser-webpack-plugin";
+// import BundleAnalyzerPlugin from 'webpack-bundle-analyzer';
 
-module.exports = merge(common, {
+const config =merge(common, {
     mode: 'production',
     devtool: 'source-map',
     optimization : {
@@ -29,3 +29,4 @@ module.exports = merge(common, {
         // new BundleAnalyzerPlugin(),
     ]
 });
+export default config;
