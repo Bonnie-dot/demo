@@ -98,6 +98,10 @@ class MyPromise<T> {
         return this.then(undefined, onRejected);
     }
 
+    finally(onFinally: (value: unknown) => void) {
+        this.then((value) => onFinally(value), (error) => onFinally(error));
+    }
+
     /*
     * @param {unknown} value - if the value function, it will return from then callback and not execute
     *

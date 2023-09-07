@@ -26,6 +26,22 @@ describe("MyPromise", () => {
         })
     });
 
+    it('should return value when call finally method given reject', () => {
+        new MyPromise((resolve, reject) => {
+            reject(4);
+        }).finally((value) => {
+            expect(value).toEqual(4);
+        })
+    });
+
+    it('should return value when call finally method given resolve', () => {
+        new MyPromise((resolve) => {
+            resolve(4);
+        }).finally((value) => {
+            expect(value).toEqual(4);
+        })
+    });
+
     it('should return value when call static resolve method given primitive value ', () => {
         MyPromise.resolve(2).then((value) => {
             expect(value).toEqual(2);
