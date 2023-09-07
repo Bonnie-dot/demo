@@ -1,6 +1,6 @@
 type State = 'PENDING' | 'FULFILLED' | 'REJECTED'
 type Handler = (resolve: (value: unknown) => void, reject: (value: unknown) => void) => void;
-const isFunction = (fn: Function) => typeof fn === "function";
+const isFunction = (fn: unknown): fn is (arg?:unknown) => unknown => typeof fn === "function";
 
 class MyPromise<T> {
     _state: State;
@@ -21,7 +21,7 @@ class MyPromise<T> {
             this._state = "FULFILLED";
             this._value = value;
             let callback;
-            while (callback = this._onResolveCallbacks.shift()){
+            while (callback = this._onResolveCallbacks.shift()) {
                 callback(value);
             }
         })
@@ -33,7 +33,7 @@ class MyPromise<T> {
             this._state = "REJECTED";
             this._reason = value;
             let callback;
-            while (callback = this._onRejectCallbacks.shift()){
+            while (callback = this._onRejectCallbacks.shift()) {
                 callback(value);
             }
         })
@@ -91,10 +91,18 @@ class MyPromise<T> {
         })
 
     }
+
     catch(onRejected?: (value: T) => unknown): MyPromise<T> {
-        return this.then(undefined,onRejected);
+        return this.then(undefined, onRejected);
     }
 
+    static resolve(value: unknown) {
+        if (value instanceof MyPromise){
+            return value;
+        }else {
+            return new MyPromise((resolve)=>resolve(value));
+        }
+    }
 }
 
 export default MyPromise

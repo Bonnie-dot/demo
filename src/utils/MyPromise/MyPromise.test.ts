@@ -26,5 +26,21 @@ describe("MyPromise", () => {
         })
     });
 
+    it('should return value when call static resolve method given primitive value ', () => {
+        MyPromise.resolve(2).then((value)=>{
+            expect(value).toEqual(2);
+        })
+    });
 
+    it('should return value when call static resolve method given a promise instance ', () => {
+        MyPromise.resolve(()=>{
+          return new MyPromise((resolve)=>{
+              setTimeout(()=>{
+                  resolve(5)
+              })
+          })
+        }).then((value)=>{
+            expect(value).toEqual(expect.any(Function));
+        });
+    });
 })
