@@ -88,5 +88,16 @@ describe("MyPromise", () => {
             })
     });
 
-
+    it('should return value when call static race method given first reject promises', () => {
+        MyPromise.race([MyPromise.reject(1), MyPromise.reject(5), MyPromise.reject(1)])
+            .then(undefined, (value) => {
+                expect(value).toEqual(1)
+            })
+    });
+    it('should return value when call static race method given first resolve promises', () => {
+        MyPromise.race([MyPromise.resolve(1), MyPromise.reject(5), MyPromise.reject(1)])
+            .then((value) => {
+                expect(value).toEqual(1)
+            })
+    });
 })

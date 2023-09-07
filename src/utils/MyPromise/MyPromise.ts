@@ -2,16 +2,6 @@ type State = 'PENDING' | 'FULFILLED' | 'REJECTED'
 type Handler = (resolve: (value: unknown) => void, reject: (value: unknown) => void) => void;
 const isFunction = (fn: unknown): fn is (arg?: unknown) => unknown => typeof fn === "function";
 
-interface PromiseFulfilledResult<T> {
-    status: "fulfilled";
-    value: T;
-}
-
-interface PromiseRejectedResult {
-    status: "rejected";
-    reason: any;
-}
-
 class MyPromise<T> {
     _state: State;
     _value: T;
@@ -185,6 +175,19 @@ class MyPromise<T> {
                         reject(errors);
                     }
                 })
+            }
+        })
+    }
+
+    /*
+   * wait for the first promise in an array to settle (either resolve or reject)
+   *
+   */
+    static race(values: unknown[]) {
+        return new MyPromise((resolve, reject) => {
+            let value;
+            while (value = values.shift()) {
+                MyPromise.resolve(value).then((value) => resolve(value), (error) => reject(error))
             }
         })
     }
