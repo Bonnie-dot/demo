@@ -43,4 +43,10 @@ describe("MyPromise", () => {
             expect(value).toEqual(expect.any(Function));
         });
     });
+
+    it('should return value when call static reject method given primitive value ', () => {
+        MyPromise.reject(2).then(undefined,(value)=>{
+            expect(value).toEqual(2);
+        })
+    });
 })

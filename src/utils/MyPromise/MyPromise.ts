@@ -1,6 +1,6 @@
 type State = 'PENDING' | 'FULFILLED' | 'REJECTED'
 type Handler = (resolve: (value: unknown) => void, reject: (value: unknown) => void) => void;
-const isFunction = (fn: unknown): fn is (arg?:unknown) => unknown => typeof fn === "function";
+const isFunction = (fn: unknown): fn is (arg?: unknown) => unknown => typeof fn === "function";
 
 class MyPromise<T> {
     _state: State;
@@ -96,11 +96,23 @@ class MyPromise<T> {
         return this.then(undefined, onRejected);
     }
 
+    /*
+    * @param {unknown} value - if the value function, it will return from then callback and not execute
+    *
+    */
     static resolve(value: unknown) {
-        if (value instanceof MyPromise){
+        if (value instanceof MyPromise) {
             return value;
-        }else {
-            return new MyPromise((resolve)=>resolve(value));
+        } else {
+            return new MyPromise((resolve) => resolve(value));
+        }
+    }
+
+    static reject(value: unknown) {
+        if (value instanceof MyPromise) {
+            return value;
+        } else {
+            return new MyPromise((undefined, reject) => reject(value));
         }
     }
 }
