@@ -131,7 +131,7 @@ class MyPromise<T> {
     /*
     *  If even a single promise in the input array rejects, the entire Promise.all operation will fail, and you won't get any of the resolved values.
     *  This behavior is suitable when you want all promises to succeed, and if any of them fail, you want to handle the error immediately.
-    * */
+    */
     static all(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
             let results: unknown[] = [];
@@ -142,20 +142,21 @@ class MyPromise<T> {
                         if (results.length === values.length) {
                             resolve(results)
                         }
-                    }, (value) => {
-                        reject(value);
+                    }, (error) => {
+                        reject(error);
                     });
             }
         })
     }
+
     /*
     * Waits for all the input promises to settle (either resolve or reject), and it doesn't fail the entire operation if some promises reject
     * Run multiple asynchronous tasks in parallel, and you're interested in knowing the outcome of each task
-    * */
+    */
     static allSettled(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
             const results: unknown[] = [];
-            const onFinalCallback = (value: MyPromise<unknown>,state:State,fn: Function) => {
+            const onFinalCallback = (value: MyPromise<unknown>, state: State, fn: Function) => {
                 results.push({status: state, value: value});
                 if (results.length === values.length) {
                     fn(results);
@@ -164,11 +165,29 @@ class MyPromise<T> {
             for (let i = 0; i < values.length; i++) {
                 MyPromise.resolve(values[i])
                     .then((value) => {
-                        onFinalCallback(value, "FULFILLED", resolve)}, (value) => onFinalCallback(value,"REJECTED", reject));
+                        onFinalCallback(value, "FULFILLED", resolve)
+                    }, (error) => onFinalCallback(error, "REJECTED", reject));
             }
         })
     }
 
+    /*
+    * This new promise will resolve with the value of the first promise in the input array that successfully resolves. If all promises in the input array reject, the returned promise will reject with an AggregateError that contains all the rejection reasons.
+    *
+    */
+    static any(values: unknown[]) {
+        return new MyPromise((resolve, reject) => {
+            let errors: unknown[] = [];
+            for (let i = 0; i < values.length; i++) {
+                MyPromise.resolve(values[i]).then((value) => resolve(value), (error) => {
+                    errors.push(error);
+                    if (errors.length === values.length) {
+                        reject(errors);
+                    }
+                })
+            }
+        })
+    }
 }
 
 export default MyPromise
