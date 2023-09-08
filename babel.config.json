@@ -1,12 +1,12 @@
 {
-  "presets": [
-    [
-      "@babel/preset-env",
-      {
-        "targets": ["defaults and supports es6-module"]
-      }
+    "presets": [
+        [
+            "@babel/preset-env",
+            {
+                "targets": ["defaults and supports es6-module"]
+            }
+        ],
+        "@babel/preset-typescript"
     ],
-    "@babel/preset-typescript"
-  ],
-  "plugins": []
+    "plugins": []
 }

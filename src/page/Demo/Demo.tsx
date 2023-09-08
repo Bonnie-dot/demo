@@ -1,7 +1,6 @@
 import React from 'react'
 
-const Demo = ()=>{
+const Demo = () => {
     return <div>Demo</div>
-
 }
-export default Demo;
+export default Demo

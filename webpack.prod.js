@@ -1,7 +1,7 @@
-import {merge} from "webpack-merge";
-import common from './webpack.common.js';
-import TerserPlugin from "terser-webpack-plugin";
-import MiniCssExtractPlugin from "mini-css-extract-plugin";
+import { merge } from 'webpack-merge'
+import common from './webpack.common.js'
+import TerserPlugin from 'terser-webpack-plugin'
+import MiniCssExtractPlugin from 'mini-css-extract-plugin'
 // import BundleAnalyzerPlugin from 'webpack-bundle-analyzer';
 
 const config = merge(common, {
@@ -11,18 +11,22 @@ const config = merge(common, {
         rules: [
             {
                 test: /\.s[ac]ss$/i,
-                use: [MiniCssExtractPlugin.loader, {
-                    loader: 'css-loader',
-                    options: {
-                        importLoaders: 1,
-                        modules: {
-                            localIdentName: "[path][name]__[local]--[hash:base64:5]",
-                        }
-                    }
-                }, 'sass-loader'],
+                use: [
+                    MiniCssExtractPlugin.loader,
+                    {
+                        loader: 'css-loader',
+                        options: {
+                            importLoaders: 1,
+                            modules: {
+                                localIdentName:
+                                    '[path][name]__[local]--[hash:base64:5]',
+                            },
+                        },
+                    },
+                    'sass-loader',
+                ],
             },
         ],
-
     },
     optimization: {
         minimize: true,
@@ -38,14 +42,14 @@ const config = merge(common, {
                     test: /node_modules/,
                     chunks: 'initial',
                     minSize: 100,
-                    minChunks: 3 //重复引入了几次
+                    minChunks: 3, //重复引入了几次
                 },
-            }
+            },
         },
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
-        new MiniCssExtractPlugin()
-    ]
-});
-export default config;
+        new MiniCssExtractPlugin(),
+    ],
+})
+export default config
