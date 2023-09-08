@@ -13,7 +13,7 @@ const OperateFile = () => {
         const blobData = await response.blob();
         const blob = new Blob([blobData]);
         const downloadLink = document.createElement('a');
-        let href = URL.createObjectURL(blob);
+        const href = URL.createObjectURL(blob);
         downloadLink.href = href;
         downloadLink.download = fileName;
         downloadLink.click();

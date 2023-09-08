@@ -1,13 +1,15 @@
 type State = 'PENDING' | 'FULFILLED' | 'REJECTED'
 type Handler = (resolve: (value: unknown) => void, reject: (value: unknown) => void) => void;
+type FunctionArray = Array<(args: unknown) => unknown>;
+
 const isFunction = (fn: unknown): fn is (arg?: unknown) => unknown => typeof fn === "function";
 
 class MyPromise<T> {
     _state: State;
     _value: T;
     _reason: unknown;
-    _onResolveCallbacks: Function[];
-    _onRejectCallbacks: Function[];
+    _onResolveCallbacks: FunctionArray;
+    _onRejectCallbacks: FunctionArray;
 
     constructor(handler: Handler) {
         this._state = "PENDING";
@@ -22,8 +24,8 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = "FULFILLED";
             this._value = value;
-            let callback;
-            while (callback = this._onResolveCallbacks.shift()) {
+            const callback = this._onResolveCallbacks.shift();
+            while (callback) {
                 callback(value);
             }
         })
@@ -34,8 +36,8 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = "REJECTED";
             this._reason = value;
-            let callback;
-            while (callback = this._onRejectCallbacks.shift()) {
+            const callback = this._onRejectCallbacks.shift();
+            while (callback) {
                 callback(value);
             }
         })
@@ -118,7 +120,7 @@ class MyPromise<T> {
         if (value instanceof MyPromise) {
             return value;
         } else {
-            return new MyPromise((undefined, reject) => reject(value));
+            return new MyPromise((_, reject) => reject(value));
         }
     }
 
@@ -128,7 +130,7 @@ class MyPromise<T> {
     */
     static all(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
-            let results: unknown[] = [];
+            const results: unknown[] = [];
             for (let i = 0; i < values.length; i++) {
                 MyPromise.resolve(values[i])
                     .then((value) => {
@@ -150,7 +152,7 @@ class MyPromise<T> {
     static allSettled(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
             const results: unknown[] = [];
-            const onFinalCallback = (value: MyPromise<unknown>, state: State, fn: Function) => {
+            const onFinalCallback = (value: MyPromise<unknown>, state: State, fn: (arg: Array<unknown>) => unknown) => {
                 results.push({status: state, value: value});
                 if (results.length === values.length) {
                     fn(results);
@@ -171,7 +173,7 @@ class MyPromise<T> {
     */
     static any(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
-            let errors: unknown[] = [];
+            const errors: unknown[] = [];
             for (let i = 0; i < values.length; i++) {
                 MyPromise.resolve(values[i]).then((value) => resolve(value), (error) => {
                     errors.push(error);
@@ -189,8 +191,8 @@ class MyPromise<T> {
    */
     static race(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
-            let value;
-            while (value = values.shift()) {
+            const value = values.shift();
+            while (value) {
                 MyPromise.resolve(value).then((value) => resolve(value), (error) => reject(error))
             }
         })
