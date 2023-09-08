@@ -1,17 +1,35 @@
 import {merge} from "webpack-merge";
 import common from './webpack.common.js';
 import TerserPlugin from "terser-webpack-plugin";
+import MiniCssExtractPlugin from "mini-css-extract-plugin";
 // import BundleAnalyzerPlugin from 'webpack-bundle-analyzer';
 
-const config =merge(common, {
+const config = merge(common, {
     mode: 'production',
     devtool: 'source-map',
-    optimization : {
+    module: {
+        rules: [
+            {
+                test: /\.s[ac]ss$/i,
+                use: [MiniCssExtractPlugin.loader, {
+                    loader: 'css-loader',
+                    options: {
+                        importLoaders: 1,
+                        modules: {
+                            localIdentName: "[path][name]__[local]--[hash:base64:5]",
+                        }
+                    }
+                }, 'sass-loader'],
+            },
+        ],
+
+    },
+    optimization: {
         minimize: true,
         minimizer: [new TerserPlugin()],
         splitChunks: {
             //分割代码块
-            maxInitialRequests:6, //默认是5
+            maxInitialRequests: 6, //默认是5
             cacheGroups: {
                 vendor: {
                     //第三方依赖
@@ -27,6 +45,7 @@ const config =merge(common, {
     },
     plugins: [
         // new BundleAnalyzerPlugin(),
+        new MiniCssExtractPlugin()
     ]
 });
 export default config;

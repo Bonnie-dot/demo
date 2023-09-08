@@ -6,7 +6,7 @@ import CloudUploadIcon from '@mui/icons-material/CloudUpload';
 import style from './file.module.scss'
 
 const OperateFile = () => {
-    const [isShow,setShow] = useState(false);
+    const [isShow, setShow] = useState(false);
     const onDownloadFile = async (response: Response): Promise<void> => {
         const array = response.headers.get("content-disposition").split("=");
         const fileName = String(array[array.length - 1]).replace(/"/g, "");
@@ -27,7 +27,7 @@ const OperateFile = () => {
         })
     }
 
-    const upload = async (uploadFile:File) => {
+    const upload = async (uploadFile: File) => {
         const formData = new FormData();
         formData.append('file', uploadFile);
         try {
@@ -52,16 +52,15 @@ const OperateFile = () => {
                 variant="outlined"
                 startIcon={<CloudUploadIcon/>}
                 href="#file-upload"
-                className={style.uploadFileContainer}
             >
                 Upload a file
-                <input type="file" className={style.uploadFile} onChange={(e)=>upload(e.target.files[0])}/>
+                <input type="file" className={style.uploadFile} onChange={(e) => upload(e.target.files[0])}/>
             </Button>
         </ButtonGroup>
         <Snackbar
             open={isShow}
             autoHideDuration={6000}
-            onClose={()=>setShow(false)}
+            onClose={() => setShow(false)}
             message="failed"
         />
     </div>
