@@ -28,9 +28,10 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = 'FULFILLED'
             this._value = value
-            const callback = this._onResolveCallbacks.shift()
+            let callback = this._onResolveCallbacks.shift()
             while (callback) {
                 callback(value)
+                callback = this._onResolveCallbacks.shift()
             }
         })
     }
@@ -40,9 +41,10 @@ class MyPromise<T> {
         queueMicrotask(() => {
             this._state = 'REJECTED'
             this._reason = value
-            const callback = this._onRejectCallbacks.shift()
+            let callback = this._onRejectCallbacks.shift()
             while (callback) {
                 callback(value)
+                callback = this._onRejectCallbacks.shift()
             }
         })
     }
@@ -208,12 +210,13 @@ class MyPromise<T> {
      */
     static race(values: unknown[]) {
         return new MyPromise((resolve, reject) => {
-            const value = values.shift()
+            let value = values.shift()
             while (value) {
                 MyPromise.resolve(value).then(
                     (value) => resolve(value),
                     (error) => reject(error)
                 )
+                value = values.shift()
             }
         })
     }

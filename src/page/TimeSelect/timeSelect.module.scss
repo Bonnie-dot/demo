@@ -1,0 +1,89 @@
+$selectColor: rgb(87, 137, 240);
+$width: 700px;
+
+.tableBox {
+    color: rgb(59, 59, 59);
+    font-size: 14px;
+    border-collapse: collapse;
+    width: $width;
+
+    th,
+    td,
+    table {
+        border: 1px solid #eaeaea;
+    }
+
+    td:not(:first-of-type) {
+        width: 10px;
+        user-select: none;
+    }
+
+    .selected {
+        background: $selectColor;
+        border-color: #eaeaea;
+    }
+
+    .selecting {
+        background: $selectColor;
+        border-color: transparent;
+    }
+
+    th {
+        font-weight: normal;
+    }
+
+    .indicatorBox {
+        margin-right: 10px;
+
+        i {
+            display: inline-block;
+            width: 10px;
+            height: 4px;
+            border: 1px solid grey;
+            vertical-align: middle;
+            margin-right: 5px;
+            border-radius: 10px;
+        }
+    }
+
+    .statistics {
+        .caption {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+            margin-top: 10px;
+
+            button {
+                background: transparent;
+                border: none;
+                color: $selectColor;
+            }
+        }
+    }
+
+    .weekCaption {
+        font-weight: bolder;
+        color: #333333;
+    }
+
+    tbody {
+        td:hover:not(.selected) {
+            background: #eaeaea;
+        }
+    }
+
+    .scheduleBox {
+        .timeRow {
+            display: flex;
+            flex-direction: row;
+            margin-left: 20px;
+            align-items: center;
+            margin-bottom: 20px;
+
+            .week {
+                min-width: 50px;
+                margin-right: 20px;
+            }
+        }
+    }
+}

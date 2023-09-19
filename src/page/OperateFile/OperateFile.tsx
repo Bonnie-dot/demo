@@ -1,7 +1,7 @@
 import React, { useState } from 'react'
 import { Button, ButtonGroup, Snackbar } from '@mui/material'
 import PDF from '../../../public/n.pdf'
-import { fetchUtil } from '../../utils/fetchUtil'
+import { fetchUtil } from '../../utils/fetchUtil/fetchUtil'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import style from './file.module.scss'
 
