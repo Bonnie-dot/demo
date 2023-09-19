@@ -1,10 +1,10 @@
-import React, { lazy } from 'react'
+import { lazy, ReactNode } from 'react'
 import { createBrowserRouter } from 'react-router-dom'
 import App from './App'
 
 type Router = {
     path: string
-    element: React.ReactNode
+    element: ReactNode
     name: string
 }
 const DownloadFile = lazy(() => import('./page/OperateFile/OperateFile'))

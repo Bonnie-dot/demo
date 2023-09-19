@@ -1,4 +1,4 @@
-import React, { Fragment, Suspense } from 'react'
+import { Fragment, Suspense } from 'react'
 import { useTimeSelect } from './hooks/useTimeSelect'
 import { COLUMNS, State, TIMES, WEEK, WEEK_COLUMNS } from '../../const'
 import style from './timeSelect.module.scss'

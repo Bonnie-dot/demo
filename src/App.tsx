@@ -1,4 +1,3 @@
-import React from 'react'
 import { Box, List, ListItem, ListItemButton } from '@mui/material'
 import { NavLink } from 'react-router-dom'
 import { router } from './router'
@@ -11,7 +10,7 @@ const App = () => {
                     {router
                         .filter((item) => item.name !== 'Home')
                         .map(({ name, path }) => (
-                            <ListItem>
+                            <ListItem key={path}>
                                 <ListItemButton>
                                     <NavLink to={path}>{name}</NavLink>
                                 </ListItemButton>
