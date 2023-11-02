@@ -6,6 +6,6 @@ ui.
 
 ## how to start:
 
-- Firstly you need to run `yarn build:dll` to get vendor code
-- yarn start
-- yarn build
+-   Firstly you need to run `yarn build:dll` to get vendor code
+-   yarn start
+-   yarn build
