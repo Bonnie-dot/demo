@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:8080'
+const BASE_URL = 'http://localhost:3000/api'
 export const fetchUtil = async (
     url: string,
     init?: RequestInit

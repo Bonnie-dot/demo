@@ -23,10 +23,10 @@ export default {
         minimizer: [new TerserPlugin()],
     },
     plugins: [
-        new webpack.DllPlugin({
-            //name和library一致
-            name: '[name]_dll',
-            path: path.resolve(__dirname, 'dist', 'dll', 'manifest.json'), //manifest.json的生成路径
-        }),
+        // new webpack.DllPlugin({
+        //     //name和library一致
+        //     name: '[name]_dll',
+        //     path: path.resolve(__dirname, 'dist', 'dll', 'manifest.json'), //manifest.json的生成路径
+        // }),
     ],
 }

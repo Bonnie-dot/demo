@@ -1,12 +1,26 @@
-import { useState } from 'react'
-import { Button, ButtonGroup, Snackbar } from '@mui/material'
+import { useEffect, useRef, useState } from 'react'
+import { Button, Snackbar } from '@mui/material'
 import PDF from '../../../public/n.pdf'
 import { fetchUtil } from '../../utils/fetchUtil/fetchUtil'
 import CloudUploadIcon from '@mui/icons-material/CloudUpload'
 import style from './file.module.scss'
-
+import styled from '@emotion/styled'
+const CustomButton = styled(Button)({
+    display: 'block',
+    marginBottom: '10px',
+})
 const OperateFile = () => {
     const [isShow, setShow] = useState(false)
+    const workerRef = useRef<Worker>()
+    useEffect(() => {
+        workerRef.current = new Worker(
+            new URL('../../utils/webworker/webworker.ts', import.meta.url)
+        )
+        console.log(workerRef.current)
+        return () => {
+            workerRef.current.terminate()
+        }
+    }, [])
     const onDownloadFile = async (response: Response): Promise<void> => {
         const array = response.headers.get('content-disposition').split('=')
         const fileName = String(array[array.length - 1]).replace(/"/g, '')
@@ -41,33 +55,53 @@ const OperateFile = () => {
             setShow(true)
         }
     }
+    const uploadImage = (files: FileList) => {
+        workerRef.current.postMessage(files)
+        workerRef.current.onmessage = (event) => {
+            console.log('webworker received message', event.data)
+        }
+    }
     return (
-        <div>
+        <div className={style.operateFile}>
             <h2>File Upload And Download</h2>
-            <ButtonGroup variant="outlined" aria-label="download file">
-                <Button variant="outlined">
-                    {/* if a tag have no download attribute, it will open a window to show pdf. Otherwise, it will show download pdf*/}
-                    <a href={PDF} download rel="noopener noreferrer">
-                        Download file by a tag
-                    </a>
-                </Button>
-                <Button variant="outlined" onClick={download}>
-                    Download File
-                </Button>
-                <Button
-                    component="label"
-                    variant="outlined"
-                    startIcon={<CloudUploadIcon />}
-                    href="#file-upload"
-                >
-                    Upload a file
-                    <input
-                        type="file"
-                        className={style.uploadFile}
-                        onChange={(e) => upload(e.target.files[0])}
-                    />
-                </Button>
-            </ButtonGroup>
+            <CustomButton variant="outlined">
+                {/* if a tag have no download attribute, it will open a window to show pdf. Otherwise, it will show download pdf*/}
+                <a href={PDF} download rel="noopener noreferrer">
+                    Download file by a tag
+                </a>
+            </CustomButton>
+            <CustomButton variant="outlined" onClick={download}>
+                Download File
+            </CustomButton>
+            <Button
+                component="label"
+                variant="outlined"
+                startIcon={<CloudUploadIcon />}
+                href="#file-upload"
+            >
+                Upload a file
+                <input
+                    type="file"
+                    className={style.uploadFile}
+                    onChange={(e) => upload(e.target.files[0])}
+                />
+            </Button>
+            <Button
+                component="label"
+                variant="outlined"
+                startIcon={<CloudUploadIcon />}
+                href="#file-upload"
+            >
+                Upload a images in background
+                <input
+                    type="file"
+                    multiple
+                    className={style.uploadFile}
+                    accept="image/*"
+                    onChange={(e) => uploadImage(e.target.files)}
+                />
+            </Button>
+
             <Snackbar
                 open={isShow}
                 autoHideDuration={6000}

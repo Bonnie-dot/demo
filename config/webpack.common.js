@@ -50,12 +50,12 @@ const config = {
             hash: true,
         }),
         new ForkTsCheckerWebpackPlugin(),
-        new CleanWebpackPlugin({
-            cleanOnceBeforeBuildPatterns: ['**/*', '!dll', '!dll/**'], //不删除dll目录
-        }),
-        new Webpack.DllReferencePlugin({
-            manifest: path.resolve(__dirname, 'dist', 'dll', 'manifest.json'),
-        }),
+        // new CleanWebpackPlugin({
+        //     cleanOnceBeforeBuildPatterns: ['**/*', '!dll', '!dll/**'], //不删除dll目录
+        // }),
+        // new Webpack.DllReferencePlugin({
+        //     manifest: path.resolve(__dirname, 'dist', 'dll', 'manifest.json'),
+        // }),
     ],
 }
 export default config
