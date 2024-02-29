@@ -9,3 +9,7 @@ ui.
 -   Firstly you need to run `yarn build:dll` to get vendor code
 -   yarn start
 -   yarn build
+
+## Backend
+
+[后端](https://github.com/Bonnie-dot/backend-workshop)是用express搭建的，可以一起启动看整个demo
